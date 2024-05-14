@@ -1,0 +1,66 @@
+import 'dart:io';
+
+// Interface
+abstract class Vehicle {
+  void accelerate();
+  void brake();
+}
+
+// Base class
+class Car implements Vehicle {
+  String brand;
+  int speed = 0;
+
+  Car(this.brand);
+
+  @override
+  void accelerate() {
+    speed += 10;
+  }
+
+  @override
+  void brake() {
+    speed -= 5;
+  }
+
+  void printInfo() {
+    print("Brand: $brand, Speed: $speed km/h");
+  }
+}
+
+// Derived class
+class ElectricCar extends Car {
+  ElectricCar(String brand) : super(brand);
+
+  @override
+  void accelerate() {
+    speed += 15; // Override the accelerate method to increase speed faster
+  }
+}
+
+void main() {
+  // Create instances
+  var car1 = Car('Toyota');
+  var electricCar1 = ElectricCar('Tesla');
+
+  // Demonstrate method override
+  car1.accelerate();
+  car1.printInfo(); // Output: Brand: Toyota, Speed: 10 km/h
+
+  electricCar1.accelerate();
+  electricCar1.printInfo(); // Output: Brand: Tesla, Speed: 15 km/h
+
+  // Initialize instance from file
+  var file = File('car_data.txt');
+  var lines = file.readAsLinesSync();
+  var carFromFile = Car(lines[0]);
+  carFromFile.speed = int.parse(lines[1]);
+
+  carFromFile.printInfo();
+
+  // Method demonstrating the use of a loop
+  for (var i = 0; i < 5; i++) {
+    carFromFile.accelerate();
+  }
+  carFromFile.printInfo(); // Output: Brand: Honda, Speed: 35 km/h
+}
